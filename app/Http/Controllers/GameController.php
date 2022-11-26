@@ -126,17 +126,17 @@ class GameController extends Controller
      */
     public function edit($id)
     {
-      $game         = $this->game->find($id);
-      $devices      = $game->devices;
-      $device_all   = $this->device->get();
-      $genres       = $game->genres;
-      $genre_all    = $this->genre->get();
-      $features     = [$game->is_new, $game->is_attention, $game->is_recommend];
+      $game        = $this->game->find($id);
+      $devices     = $game->devices;
+      $device_all  = $this->device->get();
+      $genres      = $game->genres;
+      $genre_all   = $this->genre->get();
+      $features    = [$game->is_new, $game->is_attention, $game->is_recommend];
 			$feature_all = config('feature');
-      $reviews      = $game->reviews;
-      $score        = count($reviews) > 0 ? Helper::score_avg($reviews) : 0;
-      $chart        = count($reviews) > 0 ? Helper::chart_avg($reviews) : [];
-      $images       = $game->image;
+      $reviews     = $game->reviews;
+      $score       = Helper::get_score($game);
+      $chart       = Helper::get_chart_avg($game);
+      $images      = $game->image;
       return view('game.edit', compact(
         'game',
         'devices',
