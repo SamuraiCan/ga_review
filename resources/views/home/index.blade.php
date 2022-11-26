@@ -4,7 +4,7 @@
 
 <div class="mb-5">
   <x-heading.h1
-    title="新着タイトル5"
+    title="新着タイトル"
     subTitle="New Title"
   />
   @foreach ($games_new as $k => $v)
