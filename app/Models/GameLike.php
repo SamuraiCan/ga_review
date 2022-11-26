@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class GameLike extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    /**
-     * モデルと関連しているテーブル
-     *
-     * @var string
-     */
-    protected $table = 'games_likes';
+	/**
+	 * モデルと関連しているテーブル
+	 *
+	 * @var string
+	 */
+	protected $table = 'games_likes';
+
+	public function game()
+	{
+		return $this->belongsTo(Game::class);
+	}
 }

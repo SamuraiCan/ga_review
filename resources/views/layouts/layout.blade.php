@@ -3,7 +3,7 @@
 <x-nav.head />
 
 @if (\Route::currentRouteName() == 'home')
-  <x-head.slide />    
+  <x-head.slide />
 @endif
 
 <div class="container-fluid py-4">

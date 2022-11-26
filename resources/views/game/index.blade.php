@@ -15,7 +15,7 @@
         <div class="card h-100">
           <div class="card-body">
             <a href="{{ route('game.show', $game->id) }}">
-              <h5 class="card-title">ゲームタイトル: {{ $game->title }}</h5>
+              <h5 class="card-title">{{ $game->title }}</h5>
             </a>
             <p class="card-date">リリース日 {{ $game->release_date }}</p>
           </div>

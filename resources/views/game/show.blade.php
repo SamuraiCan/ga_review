@@ -8,9 +8,71 @@
   </div>
 @endif
 
-<div class="d-flex justify-content-between align-items-center">
-  <h1 class="text-primary">{{ $game->title }}</h1>
-  <a class="btn btn-warning" href="{{ route('review.create', ['game_id' => $game->id]) }}">口コミ投稿する</a>
+<x-heading.h1
+  title="{{ $game->title }}"
+/>
+
+<div class="d-flex justify-content-between mb-4">
+  <div class="d-flex">
+    <div class="btn btn-info me-2">
+      みんなからのいいね数：
+      <span id="like_total">{{ count($likes) }}</span>
+    </div>
+    @if (Auth::check())
+      <div class="d-flex justify-content-end btn btn-success">
+        <label class="form-check-label me-2 fw-bold text-white" for="like_switch">あなたのいいね</label>
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="like_switch"
+            @if ($game->is_like()) checked @endif
+          >
+        </div>
+      </div>
+      <script>
+        const like_switch = document.getElementById('like_switch');
+        const like_total = document.getElementById('like_total');
+        like_switch.addEventListener('click', (e) => {
+          const postData = new FormData;
+          postData.set('game', {{ $game->id }});
+          postData.set('like', e.target.checked);
+          console.log(e.target.checked);
+          fetch('{{ route("game.like_change") }}', {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}',
+              'Accept': 'application/json'
+            },
+            body: postData
+          })
+          .then(res => res.json())
+          .then(data => { like_total.innerHTML = data.like_total; })
+          .catch(error => { console.log(error); });
+        });
+      </script>
+    @endif
+  </div>
+  @if(Auth::check())
+  <a
+    class="btn btn-warning"
+    href="{{ route('review.create', ['game_id' => $game->id]) }}"
+  >
+    口コミ投稿する
+  </a>
+  @else
+    <button
+      class="btn btn-secondary"
+      onclick="must_login()"
+    >
+      口コミ投稿する
+    </button>
+    <script>
+      function must_login(){
+        alert('ログインすると投稿できます');
+      }
+    </script>
+  @endif
 </div>
 
 <div class="container">
@@ -53,6 +115,12 @@
         </div>
         <div class="col-7">
           <div class="card">
+            <div class="card-header">説明</div>
+            <div class="card-body">
+              {{ $game->description }}
+            </div>
+          </div>
+          <div class="card mt-4">
             <div class="card-header">デバイス</div>
             <div class="card-body">
               @foreach ($devices as $device)

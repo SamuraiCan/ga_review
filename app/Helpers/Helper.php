@@ -4,8 +4,10 @@ namespace App\Helpers;
 
 class Helper
 {
-  public static function chart_avg($reviews) : array
+  public static function get_chart_avg($game) : array
   {
+    $reviews = $game->reviews;
+    if ( count($reviews) === 0 ) return [];
     $graphic = 0;
     $volume  = 0;
     $sound   = 0;
@@ -43,7 +45,13 @@ class Helper
     return $chart;
   }
 
-  public static function score_avg($reviews) : float
+  public static function get_score($game) : float
+  {
+    $reviews = $game->reviews;
+    return count($reviews) > 0 ? self::score_avg($reviews) : 0;
+  }
+
+  private static function score_avg($reviews) : float
   {
     $score = 0;
     foreach ($reviews as $k => $v) {

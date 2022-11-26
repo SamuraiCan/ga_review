@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\Helper;
+use App\Models\GameLike;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
@@ -100,15 +101,16 @@ class GameController extends Controller
       $game    = $this->game->find($id);
       $devices = $game->devices;
       $genres  = $game->genres;
+      $likes   = $game->likes;
       $reviews = $game->reviews;
-      $score = count($reviews) > 0 ? Helper::score_avg($reviews) : 0;
-      $chart = count($reviews) > 0 ? Helper::chart_avg($reviews) : [];
+      $score   = Helper::get_score($game);
+      $chart   = Helper::get_chart_avg($game);
       $images = $game->image;
-      // dd($images);
       return view('game.show', compact(
         'game',
         'devices',
         'genres',
+        'likes',
         'reviews',
         'score',
         'chart',
@@ -214,4 +216,29 @@ class GameController extends Controller
     {
         //
     }
-}
+
+    // お気に入り変更アクション
+    public function like_change(Request $request)
+    {
+      $like = $request->input('like');
+      $like = $like === 'true' ? true : false;
+      $game_id  = $request->input('game');
+      $user_id = Auth::user()->id;
+      if ($like) {
+        $gameLike = new GameLike();
+        $gameLike->user_id = Auth::user()->id;
+        $gameLike->game_id = $game_id;
+        $gameLike->save();
+      }else{
+        $gameLike = GameLike::where([
+          'user_id' => $user_id,
+          'game_id' => $game_id,
+        ]);
+        $gameLike->delete();
+      }
+      $likeTotal = GameLike::where('game_id', $game_id)->count();
+      $res = ['like_total' => $likeTotal];
+      header('Content-type: application/json');
+      echo json_encode($res);
+    }
+  }

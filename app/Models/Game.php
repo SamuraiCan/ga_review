@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Game extends Model
 {
@@ -30,8 +31,22 @@ class Game extends Model
   {
     return $this->belongsToMany(Genre::class)->withTimestamps();
   }
+
+  public function likes()
+  {
+    return $this->hasMany(GameLike::class);
+  }
+
   public function image()
   {
     return $this->hasMany(Image::class);
   }
+
+  public function is_like() : bool
+	{
+    if (!Auth::check()) return false;
+		$user = Auth::user()->id;
+		$count = $this->likes->where('user_id', $user)->count();
+		return $count > 0 ? true : false;
+	}
 }

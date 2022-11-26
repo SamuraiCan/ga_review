@@ -44,18 +44,18 @@
           </li>
         @endcan
       </ul>
-      <form method="GET" action="#" class="d-flex">
+      <form method="GET" action="{{ route('search.index') }}" class="d-flex">
         <input
-          class="form-control me-2"
           type="search"
-          placeholder="Search"
+          class="form-control me-2"
+          placeholder="キーワードを入力してください"
           name="search"
           value="@if (isset($search)) {{ $search }} @endif"
           aria-label="Search"
         >
         <button class="btn btn-outline-primary text-nowrap" type="submit">タイトル検索</button>
       </form>
-  </div>
+    </div>
   </div>
 </nav>
 
