@@ -4,7 +4,7 @@
 
 <div class="mb-5">
   <x-heading.h1
-    title="新着タイトル5"
+    title="新着タイトル"
     subTitle="New Title"
   />
   @foreach ($games_new as $k => $v)
@@ -16,7 +16,11 @@
       <h5 class="card-header">{{ $v->title }}</h5>
       <div class="card-body d-flex">
         <div class="eyecatch">
-          <img src="http://placehold.jp/200x250.png" alt="">
+          @if ($v->image)
+            <img src="{{ Storage::url($v->image[0]->image_path) }}">
+          @else
+            <img src="http://placehold.jp/200x250.png" alt="">
+          @endif
         </div>
         <div class="card-text">
           <div>説明：{{ $v->description }}</div>

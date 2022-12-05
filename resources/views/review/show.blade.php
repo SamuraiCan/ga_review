@@ -70,7 +70,7 @@
         <div class="col-8">
           <div class="card h-100">
             <div class="card-body">
-              <x-rader :data="$review" />
+              <div class="w-100"><x-chart.rader_game :data="$review" /></div>
             </div>
           </div>
         </div>

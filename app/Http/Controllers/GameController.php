@@ -98,13 +98,15 @@ class GameController extends Controller
      */
     public function show($id)
     {
-      $game    = $this->game->find($id);
-      $devices = $game->devices;
-      $genres  = $game->genres;
-      $likes   = $game->likes;
-      $reviews = $game->reviews;
-      $score   = Helper::get_score($game);
-      $chart   = Helper::get_chart_avg($game);
+      $game      = $this->game->find($id);
+      $devices   = $game->devices;
+      $genres    = $game->genres;
+      $likes     = $game->likes;
+      $reviews   = $game->reviews;
+      $score     = Helper::get_score($game);
+      $chart     = Helper::get_chart_avg($game);
+      $chart_sex = Helper::get_chart_sex($game);
+      $chart_device = Helper::get_chart_device($game);
       $images = $game->image;
       return view('game.show', compact(
         'game',
@@ -114,6 +116,8 @@ class GameController extends Controller
         'reviews',
         'score',
         'chart',
+        'chart_sex',
+        'chart_device',
         'images'
       ));
     }

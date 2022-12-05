@@ -124,7 +124,7 @@
 										{!! nl2br($review->review) !!}
 									</div>
 									<div class="col-8">
-										<x-rader :data="Helper::chart($review)" />
+										<x-chart.rader_game :data="Helper::chart($review)" />
 									</div>
 								</div>
 							</div>

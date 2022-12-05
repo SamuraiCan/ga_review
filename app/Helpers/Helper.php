@@ -61,4 +61,52 @@ class Helper
     $score = $score / $count;
     return $score;
   }
+
+  public static function get_chart_sex($game) : array
+  {
+    $reviews = $game->reviews;
+    if ( count($reviews) === 0 ) return [];
+    $man   = 0;
+    $woman = 0;
+    $other = 0;
+    foreach ($reviews as $k => $v) {
+      switch ($v->user->mypage->sex) {
+        case 1: $man++; break;
+        case 2: $woman++; break;
+        default: $other++; break;
+      }
+    }
+    $count = count($reviews);
+    $chart = [
+      'id'    => $v->id . "_avg_sex",
+      'man'   => $man,
+      'woman' => $woman,
+      'other' => $other,
+    ];
+    // dd($chart);
+    return $chart;
+  }
+
+  public static function get_chart_device($game) : array
+  {
+    $reviews = $game->reviews;
+    if ( count($reviews) === 0 ) return [];
+    $man   = 0;
+    $woman = 0;
+    $device_arr = [];
+    foreach ($reviews as $k => $v) {
+      if ($v->device) {
+        foreach ($v->device as $k2 => $v2) {
+          $device_arr[] = $v2->name;
+        }
+      }
+    }
+    $count = count($reviews);
+    $chart = [
+      'id'     => $v->id . "_device",
+      'values' => array_count_values($device_arr),
+    ];
+    return $chart;
+  }
+
 }

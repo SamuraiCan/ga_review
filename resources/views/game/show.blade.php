@@ -19,8 +19,10 @@
       <span id="like_total">{{ count($likes) }}</span>
     </div>
     @if (Auth::check())
-      <div class="d-flex justify-content-end btn btn-success">
-        <label class="form-check-label me-2 fw-bold text-white" for="like_switch">あなたのいいね</label>
+      <div class="d-flex justify-content-end btn btn-primary">
+        <label class="form-check-label me-2 fw-bold text-white" for="like_switch">
+          あなたのいいね
+        </label>
         <div class="form-check form-switch">
           <input
             class="form-check-input"
@@ -93,19 +95,32 @@
 
     <div id="info" class="tab-pane pt-3 active">
       <div class="row">
-        <div class="col-5">
+        <div class="col-12 mb-4">
           <div class="card h-100">
-            <div class="card-body">
-              @if ($chart)
-                <x-rader :data="$chart" />
-              @else
-                <h5 class="text-danger">レビューデータがありません</h5>
-              @endif
-              <h5 class="card-title">ゲームタイトル: {{ $game->title }}</h5>
-              <p class="card-date">リリース日 {{ $game->release_date }}</p>
-              <div>
-                <div class="starsScore" style="--rating: {{ $score }};" aria-label="Rating"></div>
-                <div>{{ $score }}</div>
+            <div class="card-body d-flex">
+              <div class="eyecatch">
+                @if (count($images) > 0)
+                  <img src="{{ Storage::url($images[0]->image_path) }}">
+                @else
+                  <img src="http://placehold.jp/200x250.png" alt="">
+                @endif
+              </div>
+              <div class="ms-3">
+                @foreach ($devices as $device)
+                  <span>＜{{ $device->name }}＞</span>
+                @endforeach
+                <div>{{ $game->description }}</div>
+                <ul>
+                  <li>リリース日：{{ $game->release_date }}</li>
+                  <li>ジャンル：
+                    @foreach ($genres as $genre)
+                      <span class="me-2">{{ $genre->name }}</span>
+                    @endforeach
+                  </li>
+                  <li>プレイ人数：{{ $game->players }}人</li>
+                  <li>オフィシャルURL：<a href="{{ $game->offical_url }}">{{ $game->offical_url }}</a></li>
+                  <li>発売元：{{ $game->agency }}</li>
+                </ul>
               </div>
             </div>
             <div class="card-footer">
@@ -113,86 +128,77 @@
             </div>
           </div>
         </div>
-        <div class="col-7">
-          <div class="card">
-            <div class="card-header">説明</div>
-            <div class="card-body">
-              {{ $game->description }}
-            </div>
-          </div>
-          <div class="card mt-4">
-            <div class="card-header">デバイス</div>
-            <div class="card-body">
-              @foreach ($devices as $device)
-                <div>{{ $device->name }}</div>
-              @endforeach
-            </div>
-          </div>
-          <div class="card mt-4">
-            <div class="card-header">ジャンル</div>
-            <div class="card-body">
-              @foreach ($genres as $genre)
-                <div>{{ $genre->name }}</div>
-              @endforeach
-            </div>
-          </div>
-          <div class="card mt-4">
-            <div class="card-header">レビュー</div>
-            <div class="card-body">
-              @foreach ($reviews as $k => $review)
-                @if ($k == $reviews->keys()->last())
-                  <div class="card">
-                @else
-                  <div class="card mb-2">
-                @endif
-                    <div class="card-header">
-                      {{ $review->user->name }}
-                    </div>
-                    <div class="card-body">
-                      <div>review: {!! nl2br($review->review) !!}</div>
-                      <div>score: {{ $review->score }}</div>
-                      <div>graphic: {{ $review->graphic }}</div>
-                      <div>volume: {{ $review->volume }}</div>
-                      <div>sound: {{ $review->sound }}</div>
-                      <div>story: {{ $review->story }}</div>
-                      <div>comfort: {{ $review->comfort }}</div>
-                      @if (count($review->device) > 0)
-                        <h6 class="mt-4">使用デバイス</h6>
-                        @foreach ($review->device as $device)
-                          <div>{{ $device->name }}</div>
-                        @endforeach
-                      @endif
-                    </div>
-                  </div>
-              @endforeach
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
     <div id="voice" class="tab-pane pt-3">
-      @foreach ($reviews as $k => $review)
-      @if ($k == $reviews->keys()->last())
-        <div class="card">
-      @else
-        <div class="card mb-2">
-      @endif
-          <div class="card-header">
-            {{ $review->user->name }}
+      <div class="card mb-2">
+        <div class="card-header">
+          プレイ評価
+        </div>
+        <div class="card-body">
+          <div class="d-flex align-items-center mb-4">
+            <strong class="me-3">口コミ評価</strong>
+            <span class="starsScore" style="--rating: {{ $score }};" aria-label="Rating"></span>
+            <strong class="ms-3">{{ $score }}</strong>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">
-                <div class="starsScore" style="--rating: {{ $review->score }};" aria-label="Rating"></div>
-                <div>review: {!! nl2br($review->review) !!}</div>
-              </div>
-              <div class="col-6">
-                <x-rader :data="$review" />
-              </div>
+          <div class="d-flex">
+            <div class="w-100 h-100">
+              @if ($chart)
+                <x-chart.rader_game :data="$chart" />
+              @else
+                <h5 class="text-danger">レビューデータがありません</h5>
+              @endif
+            </div>
+            <div class="w-100 h-100">
+              @if ($chart_sex)
+                <x-chart.doughnut_sex :data="$chart_sex" />
+              @else
+                <h5 class="text-danger">レビューデータがありません</h5>
+              @endif
+            </div>
+            <div class="w-100 h-100">
+              @if ($chart_device)
+                <x-chart.polarArea_device :data="$chart_device" />
+              @else
+                <h5 class="text-danger">レビューデータがありません</h5>
+              @endif
             </div>
           </div>
         </div>
+      </div>
+      @foreach ($reviews as $k => $review)
+      @if ($k == $reviews->keys()->last())
+      <div class="card">
+      @else
+      <div class="card mb-2">
+      @endif
+        <div class="card-header">
+          {{ $review->user->name }}
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <div class="starsScore" style="--rating: {{ $review->score }};" aria-label="Rating"></div>
+              <div>review: {!! nl2br($review->review) !!}</div>
+            </div>
+            <div class="col">
+              <div>score: {{ $review->score }}</div>
+              <div>graphic: {{ $review->graphic }}</div>
+              <div>volume: {{ $review->volume }}</div>
+              <div>sound: {{ $review->sound }}</div>
+              <div>story: {{ $review->story }}</div>
+              <div>comfort: {{ $review->comfort }}</div>
+              @if (count($review->device) > 0)
+                <h6 class="mt-4">使用デバイス</h6>
+                @foreach ($review->device as $device)
+                  <div>{{ $device->name }}</div>
+                @endforeach
+              @endif
+            </div>
+          </div>
+        </div>
+      </div>
       @endforeach
     </div>
 

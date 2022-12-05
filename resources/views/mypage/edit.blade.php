@@ -12,26 +12,26 @@
 				<div class="py-3">
 					<label for="self_info" class="form-label">自己紹介</label>
 					@if( old('self_info') )
-						<textarea name="self_info" id="self_info" rows="5" class="w-100 form-control">{{old('self_info')}}</textarea>
+						<textarea name="self_info" id="self_info" rows="5" class="w-100 form-control">{{ old('self_info') }}</textarea>
 					@else
-						<textarea name="self_info" id="self_info" rows="5" class="w-100 form-control">{{$self_info}}</textarea>
+						<textarea name="self_info" id="self_info" rows="5" class="w-100 form-control">{{ $mypage->self_info }}</textarea>
 					@endif
 				</div>
 				<div class="py-3">
 					<label for="name" class="form-label">名前</label>
 					@if( old('name') )
-						<input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+						<input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
 					@else
-						<input type="text" class="form-control" id="name" name="name" value="{{$user->name}}">
+						<input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}">
 					@endif
 				</div>
 			</div>
 			<div class="py-3">
 				<label for="name_kana" class="form-label">フリガナ</label>
 				@if( old('name_kana') )
-					<input type="text" class="form-control" id="name_kana" name="name_kana" value="{{old('name_kana')}}">
+					<input type="text" class="form-control" id="name_kana" name="name_kana" value="{{ old('name_kana') }}">
 				@else
-					<input type="text" class="form-control" id="name_kana" name="name_kana" value="{{$user->name_kana}}">
+					<input type="text" class="form-control" id="name_kana" name="name_kana" value="{{ $user->name_kana }}">
 				@endif
 			</div>
 			<div class="py-3">

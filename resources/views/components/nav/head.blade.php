@@ -64,6 +64,7 @@
     {{ session('success') }}
   </div>
 @endif
+
 @if ($errors->any())
   <div class="alert alert-danger" {{ $attributes }}>
     <ul class="mb-0">
