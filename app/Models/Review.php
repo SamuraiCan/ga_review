@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Review extends Model
 {
@@ -32,5 +33,18 @@ class Review extends Model
 	public function unapproved()
 	{
 		return $this::where('is_approval', false)->get();
+	}
+
+	public function likes()
+	{
+		return $this->hasMany(ReviewLike::class);
+	}
+
+	public function is_like() : bool
+	{
+    if (!Auth::check()) return false;
+		$user = Auth::user()->id;
+		$count = $this->likes->where('user_id', $user)->count();
+		return $count > 0 ? true : false;
 	}
 }

@@ -142,22 +142,22 @@
             <span class="starsScore" style="--rating: {{ $score }};" aria-label="Rating"></span>
             <strong class="ms-3">{{ $score }}</strong>
           </div>
-          <div class="d-flex">
-            <div class="w-100 h-100">
+          <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 justify-content-center g-5">
+            <div class="col">
               @if ($chart)
                 <x-chart.rader_game :data="$chart" />
               @else
                 <h5 class="text-danger">レビューデータがありません</h5>
               @endif
             </div>
-            <div class="w-100 h-100">
+            <div class="col">
               @if ($chart_sex)
                 <x-chart.doughnut_sex :data="$chart_sex" />
               @else
                 <h5 class="text-danger">レビューデータがありません</h5>
               @endif
             </div>
-            <div class="w-100 h-100">
+            <div class="col">
               @if ($chart_device)
                 <x-chart.polarArea_device :data="$chart_device" />
               @else
@@ -177,6 +177,49 @@
           {{ $review->user->name }}
         </div>
         <div class="card-body">
+          <div class="d-flex justify-content-end">
+            <div class="btn btn-info me-2">
+              みんなからのいいね数：
+              <span id="like_total_{{ $k }}">{{ count($review->likes) }}</span>
+            </div>
+            @if (Auth::check())
+              <div class="d-flex justify-content-end btn btn-primary">
+                <label class="form-check-label me-2 fw-bold text-white" for="like_switch_{{ $k }}">
+                  あなたのいいね
+                </label>
+                <div class="form-check form-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="like_switch_{{ $k }}"
+                    @if ($review->is_like()) checked @endif
+                  >
+                </div>
+              </div>
+              <script>
+                const like_switch_{{ $k }} = document.getElementById('like_switch_{{ $k }}');
+                const like_total_{{ $k }} = document.getElementById('like_total_{{ $k }}');
+                like_switch_{{ $k }}.addEventListener('click', (e) => {
+                  const postData = new FormData;
+                  postData.set('review', {{ $review->id }});
+                  postData.set('like', e.target.checked);
+                  console.log(e.target.checked);
+                  fetch('{{ route("review.like_change") }}', {
+                    method: 'POST',
+                    headers: {
+                      'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                      'Accept': 'application/json'
+                    },
+                    body: postData
+                  })
+                  .then(res => res.json())
+                  .then(data => { like_total_{{ $k }}.innerHTML = data.like_total; })
+                  .catch(error => { console.log(error); });
+                });
+              </script>
+            @endif
+          </div>
+
           <div class="row">
             <div class="col">
               <div class="starsScore" style="--rating: {{ $review->score }};" aria-label="Rating"></div>

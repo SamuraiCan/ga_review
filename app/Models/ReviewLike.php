@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class ReviewLike extends Model
 {
-    use HasFactory;
+	use HasFactory;
 
-    /**
-     * モデルと関連しているテーブル
-     *
-     * @var string
-     */
-    protected $table = 'reviews_likes';
+	/**
+	 * モデルと関連しているテーブル
+	 *
+	 * @var string
+	 */
+	protected $table = 'reviews_likes';
+
+	public function review()
+	{
+		return $this->belongsTo(Review::class);
+	}
 }

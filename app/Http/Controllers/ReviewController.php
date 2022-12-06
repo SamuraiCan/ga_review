@@ -6,6 +6,7 @@ use App\Mail\ReviewCreateMail;
 use App\Models\Review;
 use App\Models\Game;
 use App\Models\Device;
+use App\Models\ReviewLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -143,4 +144,30 @@ class ReviewController extends Controller
 		header('Content-type: application/json');
     echo json_encode($approval);
 	}
+
+	// お気に入り変更アクション
+	public function like_change(Request $request)
+	{
+		$like = $request->input('like');
+		$like = $like === 'true' ? true : false;
+		$review_id  = $request->input('review');
+		$user_id = Auth::user()->id;
+		if ($like) {
+			$reviewLike = new ReviewLike();
+			$reviewLike->user_id = Auth::user()->id;
+			$reviewLike->review_id = $review_id;
+			$reviewLike->save();
+		}else{
+			$reviewLike = reviewLike::where([
+				'user_id' => $user_id,
+				'review_id' => $review_id,
+			]);
+			$reviewLike->delete();
+		}
+		$likeTotal = ReviewLike::where('review_id', $review_id)->count();
+		$res = ['like_total' => $likeTotal];
+		header('Content-type: application/json');
+		echo json_encode($res);
+	}
+
 }

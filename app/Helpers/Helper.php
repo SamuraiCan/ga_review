@@ -101,10 +101,12 @@ class Helper
         }
       }
     }
+    $values = array_count_values($device_arr);
+    arsort($values);
     $count = count($reviews);
     $chart = [
       'id'     => $v->id . "_device",
-      'values' => array_count_values($device_arr),
+      'values' => $values,
     ];
     return $chart;
   }

@@ -11,6 +11,8 @@ Route::get('/review/unapproved', [Controllers\ReviewController::class, 'unapprov
 	->name('review.unapproved');
 Route::post('/review/approval_change', [Controllers\ReviewController::class, 'approval_change'])
 	->name('review.approval_change');
+Route::post('/review/like_change', [Controllers\ReviewController::class, 'like_change'])
+	->name('review.like_change');
 Route::resource('review', Controllers\ReviewController::class);
 
 // ゲームタイトルページ

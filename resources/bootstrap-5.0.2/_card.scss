@@ -59,6 +59,10 @@
   margin-bottom: 0;
 }
 
+.card-text {
+  word-break: break-all;
+}
+
 .card-text:last-child {
   margin-bottom: 0;
 }

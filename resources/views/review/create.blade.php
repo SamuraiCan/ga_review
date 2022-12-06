@@ -112,7 +112,7 @@
 		</div>
 	
 		<div class="text-center">
-			<button type="submit" class="btn btn-primary">送信</button>
+			<button type="submit" class="btn btn-primary text-white">送信</button>
 		</div>
 	</form>
 

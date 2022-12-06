@@ -55,6 +55,12 @@
         >
         <button class="btn btn-outline-primary text-nowrap" type="submit">タイトル検索</button>
       </form>
+      @if(Auth::check())
+        <form action="{{ route('logout') }}" method="post" class="nav-link">
+          @csrf
+          <button type="submit" class="btn btn-dark">ログアウト</button>
+        </form>
+      @endif
     </div>
   </div>
 </nav>

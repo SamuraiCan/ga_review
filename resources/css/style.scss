@@ -8,6 +8,10 @@ h1 {
   margin-bottom: -1px;
 }
 
+li {
+  word-break: break-all;
+}
+
 .navbar-brand {
   background-color: $primary;
   width: 7rem;
@@ -17,6 +21,26 @@ h1 {
     align-items: center;
   }
 }
+.navbar-collapse {
+  form {
+    margin-right: 1rem;
+  }
+}
+.navbar-toggler {
+  margin-right: 1rem;
+}
+
+@include media-breakpoint-down(lg) {
+  .navbar-collapse {
+    form {
+      margin: 1rem;
+    }
+  }
+  .navbar-nav {
+    padding: 0 1rem 0 1rem;
+  }
+}
+
 .logo-register{
   a {
     img {
@@ -44,6 +68,7 @@ h1 {
 // レビュー登録ページの星評価
 .stars span{
   display: flex;               /* 要素をフレックスボックスにする */
+  flex-wrap: wrap-reverse;
   flex-direction: row-reverse; /* 星を逆順に並べる */
   justify-content: flex-end;   /* 逆順なので、左寄せにする */
 }
@@ -55,6 +80,9 @@ h1 {
   font-size: 30px;             /* 星の大きさを30pxに指定 */
   padding: 0 5px;              /* 左右の余白を5pxに指定 */
   cursor: pointer;             /* カーソルが上に乗ったときに指の形にする */
+  @include media-breakpoint-down(md) {
+    font-size: 20px;
+  }
 }
 .stars label:hover,
 .stars label:hover ~ label,
@@ -77,6 +105,7 @@ h1 {
     background: linear-gradient(90deg, var(--star-background) var(--percent), var(--star-color) var(--percent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    word-break: break-all;
   }
 }
 
