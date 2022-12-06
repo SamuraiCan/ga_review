@@ -17,7 +17,7 @@
   {{-- @vite('resources/css/app.css') --}}
   @vite('resources/css/style.scss')
   @vite('resources/js/app.js')
-  @livewireStyles
+  {{-- @livewireStyles --}}
   @hasSection('title')
     <meta property="og:title" content="@yield('title') | {{ config('app.name') }}" />
   @else

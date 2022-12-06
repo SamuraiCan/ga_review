@@ -43,6 +43,8 @@ Route::group(['middleware' => ['auth', 'can:member']], function () {
 	Route::get('/mypage/edit', [Controllers\MypageController::class, 'edit'])->name('mypage.edit');
 	Route::put('/mypage', [Controllers\MypageController::class, 'update'])->name('mypage.update');
 	Route::post('/mypage', [Controllers\MypageController::class, 'store'])->name('mypage.store');
+	Route::get('/mypage/withdrawal', [Controllers\MypageController::class, 'withdrawal'])->name('mypage.withdrawal');
+	Route::delete('/user/{user}', [Controllers\MypageController::class, 'destroy'])->name('user.destroy');
 	Route::get('/review/edit', [Controllers\ReviewController::class, 'edit'])->name('review.edit');
 	Route::get('/review/create', [Controllers\ReviewController::class, 'create'])->name('review.create');
 	Route::put('/review', [Controllers\ReviewController::class, 'update'])->name('review.update');

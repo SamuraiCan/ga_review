@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WithdrawalMail;
 
 class MypageController extends Controller
 {
@@ -28,7 +30,7 @@ class MypageController extends Controller
 		$self_info = "";
 		$tel = "";
 		$mypage = $user->mypage;
-		if ( $mypage ) {
+		if ($mypage) {
 			$self_info = $mypage->self_info;
 			$tel = $mypage->tel;
 			$mypage_genres = $mypage->genre;
@@ -103,6 +105,19 @@ class MypageController extends Controller
 		$prefectures = config('pref');
 		$genres = Genre::all();
 		return view('mypage.edit', compact('user', 'mypage', 'prefectures', 'genres', 'mypage_genre_ids'));
+	}
+
+	public function withdrawal()
+	{
+		$user = Auth::user();
+		return view('mypage.withdrawal', compact('user'));
+	}
+
+	public function destroy(User $user)
+	{
+		$user->delete();
+		Mail::to('info@gareview.online')->send(new WithdrawalMail($user));
+		return redirect()->route('home');
 	}
 
 }

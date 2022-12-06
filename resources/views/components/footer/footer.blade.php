@@ -30,7 +30,7 @@
 </footer>
 
 <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-@livewireScripts
+{{-- @livewireScripts --}}
 
 </body>
 </html>

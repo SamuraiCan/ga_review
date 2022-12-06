@@ -9,30 +9,29 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReviewCreateMail extends Mailable
+class WithdrawalMail extends Mailable
 {
 	use Queueable, SerializesModels;
 
-	public function __construct($user_name, $game_title)
+	public function __construct($user)
 	{
-		$this->user_name  = $user_name;
-		$this->game_title = $game_title;
+		$this->user  = $user;
 	}
 
 	public function envelope()
 	{
 		return new Envelope(
-			subject: '新しいレビュー投稿です',
+			subject: '退会者が出ました！',
 		);
 	}
 
 	public function content()
 	{
 		return new Content(
-			view: 'emails.review.create',
+			view: 'emails.withdrawal.index',
 			with: [
-				'user_name' => $this->user_name,
-				'game_title' => $this->game_title,
+				'user_id' => $this->user->id,
+				'user_name' => $this->user->name,
 			],
 		);
 	}

@@ -98,8 +98,9 @@
 					</div>
 				</div>
 
-				<div class="text-center">
-					<a href="{{ route('mypage.edit') }}" class="btn btn-primary">編集する</a>
+				<div class="d-flex justify-content-between">
+					<a href="{{ route('mypage.edit') }}" class="btn btn-info text-white">編集する</a>
+					<a href="{{ route('mypage.withdrawal') }}" class="btn btn-dark">退会する</a>
 				</div>
 
 			</div>
