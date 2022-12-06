@@ -13,7 +13,11 @@
     @else
       <div class="card mb-2">
     @endif
-      <h5 class="card-header">{{ $v->title }}</h5>
+      <h5 class="card-header">
+        <a href="{{ route('game.show', $v->id) }}">
+          {{ $v->title }}
+        </a>
+      </h5>
       <div class="card-body d-flex">
         <div class="eyecatch">
           @if ($v->image)
